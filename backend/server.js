@@ -13,6 +13,26 @@ app.use(express.json());
 // --- TEMP STORAGE (in-memory) ---
 const workflows = [];
 
+app.post('/webhook/github', async (req, res) => {
+  console.log('📩 GitHub webhook received');
+
+  const githubEvent = req.headers['x-github-event'];
+  const payload = req.body;
+
+  console.log('Event type:', githubEvent);
+  console.log('Repository:', payload.repository?.full_name);
+
+  // TEMP: store event for trigger node
+  global.latestGitHubEvent = {
+    event: githubEvent,
+    repository: payload.repository?.full_name,
+    sender: payload.sender?.login,
+    timestamp: new Date().toISOString(),
+  };
+
+  res.status(200).json({ received: true });
+});
+
 // --- Receive workflow JSON ---
 app.post('/api/workflows', async(req, res) => {
     const workflow = req.body;
