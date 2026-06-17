@@ -36,6 +36,15 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+### Configuration
+
+To enable actual Discord notifications when workflows are triggered, create a `.env` file in the `backend` directory (a template is provided) and add your Discord Webhook URL:
+
+```env
+# backend/.env
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/1234567890/ABCDEFG
+```
+
 ### Running the Server
 
 Start the FastAPI application on port 3001:
@@ -45,8 +54,8 @@ uvicorn main:app --port 3001 --host 0.0.0.0
 ```
 
 The backend provides the following key endpoints:
-- `POST /api/workflows`: Receives and validates serialized workflows from the frontend, then executes the DAG.
-- `POST /webhook/github`: High-speed webhook ingestion endpoint.
+- `POST /api/workflows`: Receives and validates serialized workflows from the frontend, then deploys them to an in-memory active state.
+- `POST /webhook/github`: High-speed webhook ingestion endpoint that dynamically triggers any deployed workflows containing a GitHub trigger.
 
 ### Running Tests
 
@@ -56,7 +65,7 @@ To validate the webhook ingestion server's performance, run the built-in load te
 python3 load_test.py
 ```
 
-To run a quick demonstration of the schema validation and engine execution:
+To run a full end-to-end demonstration (which deploys a workflow, simulates a GitHub push, and triggers the Discord action node):
 
 ```bash
 python3 demo.py
