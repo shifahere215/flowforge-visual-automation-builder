@@ -28,8 +28,8 @@ def topological_sort(workflow: Workflow) -> List[str]:
         
     return execution_order
 
-async def execute_workflow(workflow: Workflow, execution_order: List[str]) -> Dict[str, Any]:
-    context: Dict[str, Any] = {}
+async def execute_workflow(workflow: Workflow, execution_order: List[str], initial_context: Dict[str, Any] = None) -> Dict[str, Any]:
+    context: Dict[str, Any] = initial_context or {}
     
     nodes_by_id = {n.id: n for n in workflow.nodes}
     

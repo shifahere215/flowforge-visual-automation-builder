@@ -4,21 +4,27 @@ from engine.dag import topological_sort, execute_workflow
 
 router = APIRouter()
 
+DEPLOYED_WORKFLOWS = {}
+
 @router.post("/workflows")
 async def receive_workflow(workflow: Workflow):
     # If the execution reaches here, Pydantic validation has passed.
     try:
+        # Pre-compute execution order and save to deployed workflows
         execution_order = topological_sort(workflow)
-        print("🧭 Execution order:", execution_order)
         
-        execution_result = await execute_workflow(workflow, execution_order)
+        DEPLOYED_WORKFLOWS[workflow.workflowId] = {
+            "workflow": workflow,
+            "execution_order": execution_order
+        }
+        
+        print(f"✅ Workflow {workflow.workflowId} deployed successfully. Waiting for triggers...")
         
         return {
             "success": True,
-            "message": "Workflow executed successfully",
+            "message": "Workflow deployed and ready to trigger",
             "workflowId": workflow.workflowId,
             "executionOrder": execution_order,
-            "executionResult": execution_result
         }
     except ValueError as e:
         # Catch errors like cycles (which we might also catch in Pydantic, but just in case)

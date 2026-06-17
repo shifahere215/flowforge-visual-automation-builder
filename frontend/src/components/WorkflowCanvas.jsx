@@ -49,7 +49,9 @@ const initialNodes = [
 //   }
 // ];
 
-const initialEdges = [];
+const initialEdges = [
+  { id: 'e1-2', source: '1', target: '2' }
+];
 
 export default function WorkflowCanvas() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
