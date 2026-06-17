@@ -2,6 +2,8 @@
 
 FlowForge is a visual automation builder allowing users to orchestrate workflows across heterogeneous task nodes using a Directed Acyclic Graph (DAG) execution model. It features a React-based interactive canvas frontend and a high-performance Python FastAPI backend.
 
+![FlowForge UI Demo](assets/demo.webp)
+
 ## Features
 
 - **DAG Execution Engine**: Orchestrates complex workflows ensuring dependencies are resolved via Kahn's algorithm for topological sorting.
@@ -44,6 +46,8 @@ To enable actual Discord notifications when workflows are triggered, create a `.
 # backend/.env
 DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/1234567890/ABCDEFG
 ```
+
+![Discord Webhook Integration Demo](assets/discord_demo.png)
 
 ### Running the Server
 
